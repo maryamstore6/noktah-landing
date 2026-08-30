@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ditolak Bank Bukan Pengakhiran — Konsultasi PERCUMA | Noktah Group</title>
+<meta name="description" content="Pernah ditolak bank? Konsultasi PERCUMA — kami semak semula kelayakan anda, cari punca penolakan & pilih bank yang sesuai. Tiada caj pendahuluan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1f1346; --navy2:#2f1c6a; --gold:#ffcd35; --wa:#25D366; --wa-dark:#1eb457;
+    --ink:#1d1e20; --gray:#5b5e6b; --bg:#ffffff; --soft:#f5f6fa; --line:#e6e8f0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{font-family:'DM Sans',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+  h1,h2,h3{font-family:Oswald,'Arial Narrow',sans-serif;line-height:1.15;font-weight:700}
+  img{max-width:100%;display:block}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+
+  /* ===== HERO ===== */
+  .hero{background:linear-gradient(150deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;padding:48px 0 56px;position:relative;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center;position:relative;z-index:1}
+  .badge{display:inline-block;background:var(--gold);color:var(--navy);font-weight:700;font-size:12px;letter-spacing:.5px;padding:5px 12px;border-radius:999px;margin-bottom:16px;text-transform:uppercase}
+  .hero h1{font-size:clamp(32px,7vw,48px);margin-bottom:14px;letter-spacing:.3px}
+  .hero h1 .hl{color:var(--gold)}
+  .hero p.sub{font-size:clamp(15px,3.6vw,18px);color:#d9d4f0;max-width:600px;margin-bottom:24px}
+  .cta{display:inline-flex;align-items:center;gap:10px;background:var(--wa);color:#fff;font-weight:700;font-size:17px;padding:15px 26px;border-radius:999px;text-decoration:none;box-shadow:0 8px 24px rgba(37,211,102,.35);transition:transform .15s}
+  .cta:hover{transform:translateY(-2px)}
+  .cta-note{margin-top:10px;font-size:13px;color:#b9b3dd}
+  .trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:13px;color:#c9c4e8}
+  .trust span{display:inline-flex;align-items:center;gap:6px}
+  .hero-img{border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4);border:3px solid rgba(255,205,53,.5)}
+  .hero-img img{width:100%;height:100%;object-fit:cover}
+  @media(max-width:760px){.hero-grid{grid-template-columns:1fr}.hero-img{order:-1;max-height:240px}}
+
+  /* ===== SEKSYEN ===== */
+  section{padding:44px 0}
+  h2.sec{font-size:clamp(24px,5.5vw,34px);text-align:center;margin-bottom:8px;color:var(--navy)}
+  p.sec-sub{text-align:center;color:var(--gray);max-width:660px;margin:0 auto 30px;font-size:15px}
+
+  /* ===== PAIN ===== */
+  .pain{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+  .card .ico{font-size:26px;margin-bottom:10px}
+  .card h3{font-size:18px;color:var(--navy);margin-bottom:6px}
+  .card p{font-size:14px;color:var(--gray)}
+  .pain .kicker{text-align:center;font-weight:700;color:var(--navy);margin-top:26px;font-size:15px}
+
+  /* ===== BEZANYA ===== */
+  .bezanya ul{list-style:none;max-width:680px;margin:0 auto}
+  .bezanya li{display:flex;gap:14px;padding:12px 0;font-size:15px;border-bottom:1px solid var(--line)}
+  .bezanya li:last-child{border-bottom:0}
+  .bezanya li .ic{font-size:20px;flex-shrink:0}
+
+  /* ===== PERKHIDMATAN + TERMS ===== */
+  .terms{background:var(--navy);color:#fff;border-radius:18px;padding:26px 26px 22px;margin-top:30px;max-width:820px;margin-left:auto;margin-right:auto}
+  .terms h3{color:var(--gold);font-size:17px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+  .terms p{font-size:14px;color:#e4e0f5;line-height:1.7}
+  .terms b{color:#fff}
+
+  /* ===== KELAYAKAN ===== */
+  .kelayakan ul{list-style:none;max-width:680px;margin:0 auto}
+  .kelayakan li{display:flex;gap:12px;padding:9px 0;font-size:15px}
+  .kelayakan li .tick{color:#008361;font-weight:700}
+  .kelayakan .warn{max-width:680px;margin:18px auto 0;background:#fff8e2;border:1px solid #f0dc9e;border-radius:12px;padding:14px 18px;font-size:14px;color:#7a5b00}
+
+  /* ===== LANGKAH ===== */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;counter-reset:step}
+  .step{position:relative;background:var(--soft);border-radius:16px;padding:24px 20px 20px}
+  .step::before{counter-increment:step;content:counter(step);position:absolute;top:-14px;left:18px;background:var(--gold);color:var(--navy);font-family:Oswald,sans-serif;font-weight:700;font-size:20px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,.12)}
+  .step h3{font-size:17px;color:var(--navy);margin-bottom:6px;margin-top:6px}
+  .step p{font-size:14px;color:var(--gray)}
+
+  /* ===== TESTIMONI ===== */
+  .testi{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+  .tcard{background:var(--soft);border-radius:16px;padding:20px;border:1px solid var(--line)}
+  .tcard .stars{color:#f5a623;letter-spacing:2px;font-size:15px;margin-bottom:8px}
+  .tcard p{font-size:14px}
+  .tcard .nama{margin-top:12px;font-weight:700;font-size:13px;color:var(--navy)}
+  .avatar{width:38px;height:38px;border-radius:50%;background:var(--navy);color:var(--gold);font-family:Oswald;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-right:10px;vertical-align:middle}
+
+  /* ===== FAQ ===== */
+  .faq{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;padding:14px 18px}
+  summary{font-weight:700;color:var(--navy);cursor:pointer;font-size:15px}
+  details p{font-size:14px;color:var(--gray);margin-top:8px}
+
+  /* ===== CTA AKHIR ===== */
+  .cta-final{background:linear-gradient(150deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;text-align:center}
+  .cta-final h2{font-size:clamp(26px,6vw,38px);margin-bottom:10px}
+  .cta-final p{color:#d9d4f0;max-width:580px;margin:0 auto 24px;font-size:15px}
+  .jam-info{margin-top:18px;font-size:13px;color:#b9b3dd}
+
+  /* ===== FOOTER ===== */
+  footer{background:#14102e;color:#9d97c4;font-size:13px;padding:30px 0;text-align:center}
+  footer .disclaimer{max-width:700px;margin:0 auto 12px;font-size:12px;color:#7a74a3}
+  footer a{color:#c9c4e8}
+
+  /* ===== STICKY WA ===== */
+  .sticky-wa{position:fixed;bottom:16px;right:16px;z-index:99;background:var(--wa);color:#fff;border-radius:999px;padding:13px 20px;font-weight:700;text-decoration:none;font-size:15px;box-shadow:0 8px 24px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px}
+  @media(max-width:480px){.sticky-wa span.tx{display:none}.sticky-wa{padding:14px;border-radius:50%}}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="badge">🎁 Konsultasi PERCUMA — Khas Untuk Yang Pernah Ditolak Bank</span>
+        <h1>Ditolak Bank <span class="hl">Bukan Pengakhiran.</span></h1>
+        <p class="sub">Konsultasi PERCUMA — kami semak semula kelayakan anda, cari punca penolakan, dan pilih bank yang sesuai. <strong>Tiada caj pendahuluan, tiada tekanan.</strong></p>
+        <a class="cta" href="https://wa.me/601113293498?text=Assalamualaikum%2C%20saya%20nak%20semak%20kelayakan%20loan%20-%20konsultasi%20PERCUMA." target="_blank" rel="noopener" onclick="trackWA('hero')">💬 WhatsApp Sekarang — Percuma</a>
+        <p class="cta-note">Biasanya dibalas dalam beberapa minit (Isnin–Jumaat, 9pg–5ptg)</p>
+        <div class="trust">
+          <span>✅ Konsultasi percuma</span>
+          <span>✅ Tiada caj depan</span>
+          <span>✅ Bayar hanya bila lulus</span>
+          <span>✅ Maklum balas jujur</span>
+        </div>
+      </div>
+      <div class="hero-img">
+        <img src="hero.jpg" alt="Wanita berhijab tersenyum lega — ada harapan selepas ditolak bank" width="1200" height="800">
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= PAIN ================= -->
+<section class="pain">
+  <div class="wrap">
+    <h2 class="sec">Kenapa Bank Tolak Permohonan Anda?</h2>
+    <p class="sec-sub">Setiap penolakan ada sebab. Kenal pasti puncanya — baru boleh ubah pendekatan.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="ico">📄</div>
+        <h3>Rekod CCRIS/CTOS</h3>
+        <p>Bayaran lewat, SAA, atau pernah di bawah AKPK — rekod ni jadi sebab utama ditolak. Kami tahu cara ia dinilai bank.</p>
+      </div>
+      <div class="card">
+        <div class="ico">📊</div>
+        <h3>Komitmen Terlalu Tinggi</h3>
+        <p>Gaji dah habis untuk ansuran sedia ada. DSR tinggi = risiko tinggi pada pandangan bank.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🏦</div>
+        <h3>Salah Pilih Bank</h3>
+        <p>Setiap bank ada kriteria berbeza. Mohon pada bank yang salah = ditolak. Kami tahu bank mana yang sesuai dengan profil anda.</p>
+      </div>
+    </div>
+    <p class="kicker">Ditolak bukan penghujung. Ia cuma tanda pendekatan anda perlu diubah.</p>
+  </div>
+</section>
+
+<!-- ================= BEZANYA ================= -->
+<section class="bezanya">
+  <div class="wrap">
+    <h2 class="sec">Kami Semak Dahulu, Bukan Mohon Membabi Buta</h2>
+    <p class="sec-sub">Setiap permohonan bank meninggalkan jejak. Jangan rosakkan peluang anda dengan permohonan bertubi-tubi.</p>
+    <ul>
+      <li><span class="ic">🔍</span> Kami analisa rekod anda dulu — kenal pasti punca penolakan.</li>
+      <li><span class="ic">🎯</span> Kami pilih institusi kewangan yang paling sesuai dengan profil anda.</li>
+      <li><span class="ic">🚫</span> Kami elakkan permohonan bertubi-tubi yang merosakkan peluang anda.</li>
+      <li><span class="ic">🤝</span> Jika anda belum layak, kami cakap terus — jujur, tak buang masa anda.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= PERKHIDMATAN ================= -->
+<section>
+  <div class="wrap">
+    <h2 class="sec">Apa yang Kami Tawarkan</h2>
+    <p class="sec-sub">Perunding kewangan — kami bekerjasama dengan pelbagai institusi kewangan untuk cari pilihan terbaik untuk anda.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="ico">💵</div>
+        <h3>Personal Loan</h3>
+        <p>Pinjaman bank RM8,000–RM250,000 untuk tunai segera, gabung hutang, atau keperluan keluarga.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🏠</div>
+        <h3>Refinance Rumah (Cash Out)</h3>
+        <p>Gunakan nilai rumah anda untuk tunai besar dengan kadar lebih rendah daripada kad kredit.</p>
+      </div>
+      <div class="card">
+        <div class="ico">📈</div>
+        <h3>Unit Trust (Tunai &amp; KWSP)</h3>
+        <p>Perancangan pelaburan untuk masa depan, mengikut profil risiko anda.</p>
+      </div>
+    </div>
+    <div class="terms">
+      <h3>⚖️ Terma Pinjaman</h3>
+      <p><b>Jumlah:</b> RM8,000–RM250,000 &nbsp;•&nbsp; <b>Kadar faedah berkesan:</b> lebih kurang 4%–18% setahun bergantung bank &amp; kelayakan &nbsp;•&nbsp; <b>Tempoh bayaran:</b> 1–10 tahun &nbsp;•&nbsp; <b>Yuran:</b> yuran perkhidmatan hanya dikenakan selepas kelulusan &amp; wang disalurkan.<br>
+      <b>Kelulusan TERTAKLUK semakan dan polisi institusi kewangan.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KELAYAKAN ================= -->
+<section class="kelayakan">
+  <div class="wrap">
+    <h2 class="sec">Siapa Boleh Cuba?</h2>
+    <ul>
+      <li><span class="tick">✓</span> Warganegara Malaysia, 18 tahun ke atas</li>
+      <li><span class="tick">✓</span> Bekerja tetap, gaji masuk bank (6 bulan ke atas)</li>
+      <li><span class="tick">✓</span> Pendapatan RM2,000 ke atas (ikut produk)</li>
+    </ul>
+    <div class="warn">⚠️ Kami <b>TIDAK menjanjikan kelulusan</b> — tiada sesiapa boleh. Yang kami jamin: penilaian jujur dan usaha terbaik.</div>
+  </div>
+</section>
+
+<!-- ================= LANGKAH ================= -->
+<section>
+  <div class="wrap">
+    <h2 class="sec">Cara Kerja — 3 Langkah Mudah</h2>
+    <p class="sec-sub">Proses telus, kami uruskan dari mula sampai selesai.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>WhatsApp Kami</h3>
+        <p>Hantar mesej ringkas — beritahu pendapatan &amp; keperluan anda. Percuma, tiada komitmen.</p>
+      </div>
+      <div class="step">
+        <h3>Semak Profil &amp; Pilih Bank</h3>
+        <p>Kami analisa rekod anda &amp; pilih institusi kewangan paling sesuai.</p>
+      </div>
+      <div class="step">
+        <h3>Urus Permohonan</h3>
+        <p>Kami uruskan dokumen &amp; permohonan. Maklum balas ikut proses bank.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:30px">
+      <a class="cta" href="https://wa.me/601113293498?text=Assalamualaikum%2C%20saya%20nak%20semak%20kelayakan%20loan%20-%20konsultasi%20PERCUMA." target="_blank" rel="noopener" onclick="trackWA('mid')">💬 Semak Kelayakan Saya — Percuma</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONI ================= -->
+<section>
+  <div class="wrap">
+    <h2 class="sec">Apa Kata Pelanggan Kami?</h2>
+    <p class="sec-sub">Mereka dah cuba — giliran anda seterusnya.</p>
+    <div class="testi">
+      <div class="tcard">
+        <div class="stars">★★★★★</div>
+        <p>"Dua tahun saya ditolak 5 bank. Noktah semak profil saya, jumpa bank yang sesuai — akhirnya lulus. Rasa macam dapat harapan semula."</p>
+        <div class="nama"><span class="avatar">J</span>Jururawat, Hospital Ampang</div>
+      </div>
+      <div class="tcard">
+        <div class="stars">★★★★★</div>
+        <p>"Saya ada rekod CCRIS teruk dan asyik ditolak. Pasukan Noktah analisa rekod saya dan susun semula profil kewangan. Loan saya akhirnya diluluskan."</p>
+        <div class="nama"><span class="avatar">S</span>Sarah Lee, 32</div>
+      </div>
+      <div class="tcard">
+        <div class="stars">★★★★★</div>
+        <p>"Komitmen bulanan saya turun hampir 40% selepas debt consolidation. Telus, tiada caj tersembunyi."</p>
+        <div class="nama"><span class="avatar">A</span>Ahmad Faizal, 38</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="faq">
+  <div class="wrap">
+    <h2 class="sec">Soalan Lazim</h2>
+    <p class="sec-sub">Jawapan jujur untuk keraguan anda.</p>
+    <details>
+      <summary>Kamu jamin lulus?</summary>
+      <p>TIDAK. Tiada sesiapa boleh jamin kelulusan bank. Tugas kami memastikan anda mohon dengan cara yang betul dan layak.</p>
+    </details>
+    <details>
+      <summary>Saya pernah bawah AKPK, boleh?</summary>
+      <p>Bergantung rekod &amp; status semasa. Konsultasi percuma — kami nilai dulu.</p>
+    </details>
+    <details>
+      <summary>Berapa yuran?</summary>
+      <p>Tiada caj pendahuluan. Yuran hanya bila loan lulus &amp; duit masuk.</p>
+    </details>
+    <details>
+      <summary>Apa dokumen diperlukan?</summary>
+      <p>NRIC, slip gaji, penyata KWSP/EPF, penyata bank, surat pengesahan kerja.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ================= CTA AKHIR ================= -->
+<section class="cta-final">
+  <div class="wrap">
+    <h2>Satu Penolakan Bukan Pengakhiran.<br>Semakan PERCUMA Hari Ini.</h2>
+    <p>Masalah kewangan tak akan selesai sendiri. Satu mesej WhatsApp — dan kami bantu anda semak semula kelayakan anda.</p>
+    <a class="cta" href="https://wa.me/601113293498?text=Assalamualaikum%2C%20saya%20nak%20semak%20kelayakan%20loan%20-%20konsultasi%20PERCUMA." target="_blank" rel="noopener" onclick="trackWA('final')">💬 WhatsApp Sekarang — Percuma</a>
+    <p class="jam-info">🕘 Isnin–Jumaat: 9:00pg–5:00ptg • Sabtu &amp; Ahad: Tutup<br>📱 +60 11-1329 3498 • ✉️ admin@noktahgroup.my</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer">Noktah Group ialah perunding kewangan &amp; ejen pinjaman bank — BUKAN pemberi pinjaman wang. Kami tidak menyediakan pinjaman daripada syarikat sendiri. Semua kelulusan pinjaman tertakluk kepada terma &amp; polisi institusi kewangan masing-masing. Sesuai untuk 18 tahun ke atas.</p>
+    <p>© 2026 Noktah Group • 55, Jalan SP, Taman Sri Putra, 47000 Sungai Buloh, Selangor<br>
+    📱 +60 11-1329 3498 • ✉️ admin@noktahgroup.my<br>
+    <a href="privasi.html">Dasar Privasi</a> &nbsp;•&nbsp; <a href="syarat.html">Terma &amp; Syarat</a></p>
+  </div>
+</footer>
+
+<!-- Sticky WhatsApp -->
+<a class="sticky-wa" href="https://wa.me/601113293498?text=Assalamualaikum%2C%20saya%20nak%20semak%20kelayakan%20loan%20-%20konsultasi%20PERCUMA." target="_blank" rel="noopener" onclick="trackWA('sticky')">💬 <span class="tx">WhatsApp Kami</span></a>
+
+<script>
+// Event WhatsApp Click untuk Meta Pixel (aktifkan bila Pixel ID disediakan)
+function trackWA(lokasi){
+  if (typeof fbq === 'function') {
+    fbq('track', 'Lead', {content_name: 'whatsapp_click_' + lokasi, currency: 'MYR'});
+  }
+}
+</script>
+</body>
+</html>
