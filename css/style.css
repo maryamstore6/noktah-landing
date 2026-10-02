@@ -8,7 +8,9 @@
 :root{
   --navy:#1f1346; --navy2:#2f1c6a; --navy3:#160e33;
   --gold:#ffcd35; --gold-dim:#e0b21f;
-  --wa:#25D366; --wa-dark:#1eb457;
+  /* CTA green. WhatsApp brand #25D366 gives white text only 1.98:1 — fails
+     WCAG AA (needs 4.5:1). #0E7A6B is 5.23:1 and still reads as WhatsApp green. */
+  --wa:#0E7A6B; --wa-dark:#0B6357;
   --ink:#1d1e20; --gray:#5b5e6b;
   --bg:#ffffff; --soft:#f5f6fa; --line:#e6e8f0;
   --w70:#d9d4f0; --w50:#b9b3dd; --w30:#9d97c4;
@@ -19,13 +21,33 @@
   --ease:cubic-bezier(.22,.61,.36,1);
   --ease-out:cubic-bezier(.16,1,.3,1);
   --shadow-card:0 1px 2px rgba(31,19,70,.04), 0 8px 24px rgba(31,19,70,.06);
-  --shadow-wa:0 8px 24px rgba(37,211,102,.35);
+  --shadow-wa:0 8px 24px rgba(14,122,107,.30);
   --shadow-img:0 20px 50px rgba(0,0,0,.4);
 }
 
 /* ---------- reset ---------- */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:auto}                 /* Lenis owns scrolling */
+
+/* ---------- skip link ---------- */
+/* Keyboard and screen-reader users need to bypass the header on every page. */
+.skip-link{
+  position:absolute;left:-9999px;top:0;z-index:9999;
+  background:var(--gold);color:var(--navy);font-weight:600;
+  padding:10px 18px;border-radius:0 0 var(--r-sm) 0;text-decoration:none;
+}
+.skip-link:focus{left:0}
+
+/* ---------- focus visibility ---------- */
+/* WCAG 2.4.7. Nothing on the page had a visible focus state. */
+a:focus-visible,button:focus-visible,summary:focus-visible,
+details:focus-visible,[tabindex]:focus-visible{
+  outline:3px solid var(--gold);outline-offset:3px;border-radius:6px;
+}
+.hdr a:focus-visible,.hero a:focus-visible,footer a:focus-visible{
+  outline-color:#fff;
+}
+
 body{
   font-family:'DM Sans',Arial,sans-serif;color:var(--ink);background:var(--bg);
   line-height:1.6;overflow-x:hidden;
@@ -49,11 +71,112 @@ a{color:inherit}
   transition:opacity .55s var(--ease),visibility .55s var(--ease);
 }
 .loader.is-gone{opacity:0;visibility:hidden;pointer-events:none}
-.loader-mark{font-family:Oswald,sans-serif;font-weight:700;font-size:26px;letter-spacing:3px;color:#fff}
+.loader-mark{font-family:Oswald,sans-serif;font-weight:700;font-size:26px;letter-spacing:3px;color:#fff;opacity:0}
 .loader-mark em{color:var(--gold);font-style:normal}
+
+/* ---------- logo intro: "the dot that moves on" ---------- */
+/* A single gold dot appears, stretches into a rule, and the wordmark resolves.
+   Replaces the % counter — the counter said "loading", this says "not a full stop". */
+.intro{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px}
+.intro__dot{
+  width:9px;height:9px;border-radius:var(--r-pill);background:var(--gold);
+  transform:translateX(-96px) scale(.6);opacity:0;
+}
+.intro__rule{
+  position:absolute;top:4px;left:50%;height:2px;width:0;border-radius:var(--r-pill);
+  background:linear-gradient(90deg,var(--gold),var(--gold-dim));
+  transform:translateX(-50%);opacity:0;
+}
+.js .intro.is-play .intro__dot{
+  animation:introDot 1.35s var(--ease-out) forwards;
+}
+.js .intro.is-play .intro__rule{
+  animation:introRule 1.35s var(--ease-out) forwards;
+}
+.js .intro.is-play .loader-mark{
+  animation:introMark .7s var(--ease-out) .62s forwards;
+}
+@keyframes introDot{
+  0%{opacity:0;transform:translateX(-96px) scale(.6)}
+  28%{opacity:1;transform:translateX(0) scale(1.5)}
+  55%{opacity:1;transform:translateX(0) scale(1)}
+  100%{opacity:0;transform:translateX(0) scale(1)}
+}
+@keyframes introRule{
+  0%,26%{opacity:0;width:0}
+  34%{opacity:1;width:0}
+  78%{opacity:1;width:190px}
+  100%{opacity:0;width:190px}
+}
+@keyframes introMark{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:none}
+}
 .loader-track{width:min(240px,60vw);height:3px;background:rgba(255,255,255,.14);border-radius:var(--r-pill);overflow:hidden}
 .loader-bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-dim));border-radius:var(--r-pill)}
 .loader-pct{font-size:11px;letter-spacing:2px;color:var(--w30);font-variant-numeric:tabular-nums}
+
+/* ---------- brand logo (monochrome variant) ---------- */
+/* Source logo-sm.png is black #000000 + red #e50003 — neither is in this
+   palette, and a white box on the navy header put four brand colours on
+   screen at once. Filter flattens the REAL logo to white: same shape, no
+   redraw, no invented mark. The original PNG is untouched on the favicon. */
+.logo-mark{display:block;flex-shrink:0;object-fit:contain}
+.hdr-brand .logo-mark{width:30px;height:30px;filter:brightness(0) invert(1);opacity:.95}
+footer .logo-mark{width:64px;height:64px;filter:brightness(0) invert(1);opacity:.9;margin:0 auto 12px}
+
+/* ---------- dot system ("Noktah bukan noktah") ---------- */
+/* "Noktah" = a full stop. The page's promise is that a rejection is a dot,
+   not the end — so the brand mark is a dot that moves on instead of resting.
+   All transform/opacity only: GPU-composited, no layout thrash. */
+
+/* Hero dot field — a slow drift of small dots behind the copy. */
+.hero-dots{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.hero-dot{
+  position:absolute;border-radius:50%;background:var(--gold);
+  opacity:0;will-change:transform,opacity;
+}
+.hero-dot--soft{background:rgba(255,255,255,.55)}
+
+/* Section divider — a rule with one dot that travels along it on scroll. */
+.dot-rule{
+  position:relative;height:1px;max-width:980px;margin:0 auto;
+  background:linear-gradient(90deg,transparent,var(--line) 12%,var(--line) 88%,transparent);
+}
+.dot-rule__dot{
+  position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;
+  background:var(--gold);transform:translate(-50%,-50%);
+  box-shadow:0 0 0 4px rgba(255,205,53,.16);
+}
+
+/* Scroll progress — a travelling dot instead of a bar. */
+.progress{
+  position:fixed;top:0;left:0;height:2px;width:0;z-index:9500;
+  background:linear-gradient(90deg,var(--gold),var(--gold-dim));transform-origin:0 50%;
+}
+.progress-dot{
+  position:fixed;top:0;left:0;width:9px;height:9px;border-radius:50%;z-index:9501;
+  background:var(--gold);box-shadow:0 0 10px rgba(255,205,53,.75);
+  transform:translate(-50%,-50%);pointer-events:none;
+}
+
+/* ---------- metric counters ---------- */
+.metrics{background:var(--navy);color:#fff}
+.metric-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:var(--s3);text-align:center;
+}
+.metric{padding:var(--s2) 0}
+.metric__num{
+  font-family:Oswald,sans-serif;font-weight:700;line-height:1;
+  font-size:clamp(30px,6.5vw,46px);color:var(--gold);
+  font-variant-numeric:tabular-nums;
+}
+.metric__num sup{font-size:.46em;vertical-align:super;letter-spacing:.5px}
+.metric__label{
+  margin-top:8px;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--w50);
+}
 
 /* ---------- film texture + progress ---------- */
 .grain{
@@ -63,10 +186,6 @@ a{color:inherit}
 .vignette{
   position:fixed;inset:0;z-index:8999;pointer-events:none;
   background:radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(22,14,51,.16) 100%);
-}
-.progress{
-  position:fixed;top:0;left:0;height:3px;width:0;z-index:9500;
-  background:linear-gradient(90deg,var(--gold),var(--gold-dim));transform-origin:0 50%;
 }
 
 /* ---------- sticky header ---------- */
@@ -79,7 +198,6 @@ a{color:inherit}
 .hdr.is-stuck{transform:translateY(0)}
 .hdr-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;height:62px}
 .hdr-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.hdr-brand img{width:34px;height:34px;background:#fff;border-radius:9px;padding:3px;object-fit:contain}
 .hdr-brand span{font-family:Oswald,sans-serif;font-weight:700;font-size:15px;letter-spacing:1.4px;color:#fff}
 .hdr-brand span em{color:var(--gold);font-style:normal}
 .hdr-cta{
@@ -97,7 +215,7 @@ a{color:inherit}
 }
 .hero-bloom{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
 .hero-bloom--1{width:420px;height:420px;background:rgba(255,205,53,.16);top:-140px;right:-100px}
-.hero-bloom--2{width:360px;height:360px;background:rgba(37,211,102,.13);bottom:-160px;left:-120px}
+.hero-bloom--2{width:360px;height:360px;background:rgba(14,122,107,.16);bottom:-160px;left:-120px}
 .hero-bloom--3{width:300px;height:300px;background:rgba(122,74,255,.20);top:30%;left:40%}
 .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center;position:relative;z-index:2}
 
@@ -117,13 +235,13 @@ a{color:inherit}
   font-size:17px;padding:15px 26px;border-radius:var(--r-pill);text-decoration:none;
   box-shadow:var(--shadow-wa);transition:transform .15s var(--ease),box-shadow .15s;position:relative;
 }
-.cta:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,211,102,.45)}
+.cta:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(14,122,107,.42)}
 .cta-note{margin-top:10px;font-size:13px;color:var(--w50)}
 .trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:13px;color:#c9c4e8}
 .trust span{display:inline-flex;align-items:center;gap:6px}
 
 .brand{display:flex;align-items:center;gap:14px;margin-bottom:30px}
-.brand img{width:58px;height:58px;background:#fff;border-radius:var(--r-sm);padding:5px;object-fit:contain}
+.brand .logo-mark{width:52px;height:52px;filter:brightness(0) invert(1);opacity:.95}
 .brand .brand-name{font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(17px,4vw,22px);letter-spacing:1.5px;color:#fff;line-height:1.15}
 .brand .brand-name em{color:var(--gold);font-style:normal}
 .brand .brand-name small{display:block;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:3px;color:var(--w50);font-weight:500}
@@ -242,10 +360,18 @@ details p{font-size:14px;color:var(--gray);margin-top:8px}
 .cta-final p{color:var(--w70);max-width:580px;margin:0 auto 24px;font-size:15px}
 .jam-info{margin-top:18px;font-size:13px;color:var(--w50)}
 
+/* Centred CTA block (was an inline style, which blocked CSP). */
+.center-cta{text-align:center;margin-top:30px}
+
 /* ---------- footer ---------- */
 footer{background:var(--navy3);color:var(--w30);font-size:13px;padding:30px 0;text-align:center}
-footer .disclaimer{max-width:700px;margin:0 auto 12px;font-size:12px;color:#7a74a3}
+footer .disclaimer{max-width:700px;margin:0 auto 12px;font-size:12px;color:#8f89b8}
 footer a{color:#c9c4e8}
+.foot-brand{
+  font-family:Oswald,sans-serif;font-weight:700;letter-spacing:1.5px;
+  color:#fff;font-size:16px;margin-bottom:14px;
+}
+.foot-brand span{color:var(--gold)}
 
 /* ---------- sticky WhatsApp ---------- */
 .sticky-wa{
@@ -312,4 +438,10 @@ footer a{color:#c9c4e8}
   .marquee-track{transform:none !important}
   .card:hover,.cta:hover,.sticky-wa:hover,.hdr-cta:hover{transform:none !important}
   *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+  /* New dot-system elements must resolve to a readable resting state. */
+  .hero-dot{display:none !important}
+  .progress-dot{display:none !important}
+  .dot-rule__dot{display:none !important}
+  .loader-mark{opacity:1 !important}
+  .metric__num{opacity:1 !important}
 }

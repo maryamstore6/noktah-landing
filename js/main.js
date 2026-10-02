@@ -17,11 +17,14 @@
   var hasLenis = typeof window.Lenis !== 'undefined';
 
   /* ------------------------------------------------------------------ *
-   * Preloader
+   * Preloader / logo intro
+   * A single gold dot appears, stretches into a rule, then the wordmark
+   * resolves — "noktah" (a full stop) that moves on instead of resting.
    * Hard 2.6s ceiling: a loader that waits on a slow asset on a 3G
    * Meta-ad click is a bounce, not a flourish.
    * ------------------------------------------------------------------ */
   var loader = document.getElementById('loader');
+  var intro = document.getElementById('intro');
   var bar = document.getElementById('loader-bar');
   var pct = document.getElementById('loader-pct');
   var done = false;
@@ -35,21 +38,32 @@
     if (hasGSAP && window.ScrollTrigger) window.ScrollTrigger.refresh();
   }
 
+  /* Hide the loader explicitly instead of relying on the reduced-motion CSS
+     media query alone. If that query ever fails to match, the loader is a
+     full-screen z-9999 overlay sitting on top of the whole page. */
+  function hideLoader() {
+    document.body.classList.remove('is-loading');
+    if (loader) loader.classList.add('is-gone');
+    done = true;
+  }
+
   if (reduced || !loader) {
     // No motion, or a partial page with no loader: never hold the body.
-    document.body.classList.remove('is-loading');
+    hideLoader();
   } else {
+    if (intro) intro.classList.add('is-play');
+    // Progress is cosmetic here — the intro is the real event.
     var p = 0;
     var tick = setInterval(function () {
-      p += Math.random() * 22 + 10;
+      p += Math.random() * 24 + 12;
       if (p >= 100) p = 100;
       if (bar) bar.style.width = p + '%';
       if (pct) pct.textContent = String(Math.floor(p)).padStart(3, '0') + '%';
       if (p >= 100) {
         clearInterval(tick);
-        setTimeout(finishLoader, 220);
+        setTimeout(finishLoader, 260);
       }
-    }, 130);
+    }, 120);
     setTimeout(finishLoader, 2600); // hard ceiling
   }
 
@@ -85,15 +99,19 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * Scroll progress bar
+   * Scroll progress — a travelling dot instead of a bar
    * ------------------------------------------------------------------ */
   var progress = document.querySelector('.progress');
+  var progressDot = document.getElementById('progressDot');
   function updateProgress() {
-    if (!progress) return;
     var h = document.documentElement.scrollHeight - window.innerHeight;
     var y = window.scrollY || window.pageYOffset;
     var ratio = h > 0 ? Math.min(1, Math.max(0, y / h)) : 0;
-    progress.style.width = (ratio * 100) + '%';
+    if (progress) progress.style.width = (ratio * 100) + '%';
+    if (progressDot) {
+      progressDot.style.left = (ratio * window.innerWidth) + 'px';
+      progressDot.style.top = '1px';
+    }
   }
 
   /* ------------------------------------------------------------------ *
@@ -200,6 +218,132 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Dot system — "Noktah bukan noktah"
+   * Level B: hero dot field + travelling section dividers. No cursor
+   * follower, no canvas. Transform/opacity only, so it stays composited.
+   * ------------------------------------------------------------------ */
+
+  /* Hero dot field: a slow drift of dots behind the copy. */
+  var dotHost = document.getElementById('heroDots');
+  if (dotHost && !reduced) {
+    var DOTS = 34;
+    var w = dotHost.clientWidth || window.innerWidth;
+    var h = dotHost.clientHeight || 480;
+    var field = [];
+    for (var i = 0; i < DOTS; i++) {
+      var d = document.createElement('span');
+      d.className = 'hero-dot' + (i % 3 === 0 ? ' hero-dot--soft' : '');
+      var size = 2 + Math.random() * 3;
+      var y = Math.random() * h;
+      var speed = 0.10 + Math.random() * 0.28;
+      var alpha = 0.18 + Math.random() * 0.42;
+      d.style.width = size + 'px';
+      d.style.height = size + 'px';
+      d.style.top = y + 'px';
+      d.style.left = '0';
+      d.style.opacity = String(alpha);
+      dotHost.appendChild(d);
+      field.push({ el: d, x: Math.random() * w, y: y, v: speed, a: alpha, ph: Math.random() * 6.28 });
+    }
+
+    // Only animate while the hero is on screen.
+    var heroVisible = true;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        heroVisible = es[0].isIntersecting;
+      }, { threshold: 0 }).observe(dotHost);
+    }
+
+    var last = performance.now();
+    (function dotLoop(now) {
+      requestAnimationFrame(dotLoop);
+      if (!heroVisible || document.hidden) { last = now; return; }
+      var dt = Math.min((now - last) / 16.67, 3);
+      last = now;
+      var cw = dotHost.clientWidth || w;
+      for (var k = 0; k < field.length; k++) {
+        var f = field[k];
+        f.x += f.v * dt;
+        if (f.x > cw + 8) { f.x = -8; f.y = Math.random() * h; }
+        // gentle vertical bob so the field is not a straight conveyor
+        f.ph += 0.012 * dt;
+        var oy = Math.sin(f.ph) * 6;
+        f.el.style.transform = 'translate3d(' + f.x.toFixed(1) + 'px,' + oy.toFixed(1) + 'px,0)';
+      }
+    })(performance.now());
+  }
+
+  /* Section dividers: one dot travels along each rule on scroll. */
+  var rules = document.querySelectorAll('.dot-rule');
+  if (rules.length) {
+    var ruleDots = [];
+    rules.forEach(function (r) {
+      var dot = r.querySelector('.dot-rule__dot');
+      if (dot) ruleDots.push({ rule: r, dot: dot });
+    });
+    window.__updateRuleDots = function () {
+      var vh = window.innerHeight;
+      for (var i = 0; i < ruleDots.length; i++) {
+        var it = ruleDots[i];
+        var rect = it.rule.getBoundingClientRect();
+        // 0 when the rule enters from the bottom, 1 when it leaves the top.
+        var t = (vh - rect.top) / (vh + rect.height);
+        t = t < 0 ? 0 : (t > 1 ? 1 : t);
+        it.dot.style.left = (t * 100).toFixed(2) + '%';
+      }
+    };
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Metric counters — count up once when scrolled into view.
+   * Values are read from data-* so the copy stays the single source of truth.
+   * ------------------------------------------------------------------ */
+  var metrics = document.querySelectorAll('[data-count-to]');
+  function runCounter(el) {
+    var to = parseFloat(el.getAttribute('data-count-to'));
+    var dec = parseInt(el.getAttribute('data-count-dec') || '0', 10);
+    var pre = el.getAttribute('data-count-pre') || '';
+    var suf = el.getAttribute('data-count-suf') || '';
+    if (isNaN(to)) return;
+    function fmt(v) {
+      return pre + v.toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + suf;
+    }
+    // Reduced motion, or a zero target: show the final value immediately.
+    // Never leave a visitor staring at 0.
+    if (reduced || to === 0) {
+      el.textContent = fmt(to);
+      return;
+    }
+    var t0 = null;
+    var DUR = 1400;
+    el.textContent = fmt(0); // animate up from zero
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var t = Math.min((ts - t0) / DUR, 1);
+      // easeOutCubic
+      var e = 1 - Math.pow(1 - t, 3);
+      el.textContent = fmt(to * e);
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = fmt(to); // guarantee the exact final value
+    }
+    requestAnimationFrame(step);
+  }
+  if (metrics.length) {
+    if (reduced || !('IntersectionObserver' in window)) {
+      metrics.forEach(runCounter);
+    } else {
+      var mio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          runCounter(e.target);
+          mio.unobserve(e.target);
+        });
+      }, { threshold: 0.4 });
+      metrics.forEach(function (m) { mio.observe(m); });
+    }
+  }
+
+  /* ------------------------------------------------------------------ *
    * Anchor links route through Lenis
    * A raw scrollIntoView bypasses Lenis and desyncs ScrollTrigger.
    * ------------------------------------------------------------------ */
@@ -272,6 +416,7 @@
       updateHeader();
       updateCookieNote();
       if (window.__revealSweep) window.__revealSweep();
+      if (window.__updateRuleDots) window.__updateRuleDots();
       ticking = false;
     });
   }
@@ -279,6 +424,7 @@
   updateProgress();
   updateHeader();
   updateCookieNote();
+  if (window.__updateRuleDots) window.__updateRuleDots();
 
   // Late font load changes document height — recompute triggers.
   if (document.fonts && document.fonts.ready) {
