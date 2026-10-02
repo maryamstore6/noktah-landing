@@ -373,6 +373,65 @@ footer a{color:#c9c4e8}
 }
 .foot-brand span{color:var(--gold)}
 
+/* ---------- legal / utility pages (privasi, syarat, 404) ---------- */
+/* These were self-contained documents with an inline <style>, so clicking
+   "Dasar Privasi" from the footer dropped the visitor into a visually
+   different site. They now share this stylesheet and carry the same navy
+   header/footer chrome — a document, but recognisably the same site. */
+.legal-hdr{
+  background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);
+  padding:14px 0;
+}
+.legal-hdr .wrap{max-width:820px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.legal-hdr a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin:0}
+.legal-hdr .logo-mark{width:28px;height:28px;filter:brightness(0) invert(1);opacity:.95}
+.legal-hdr .brand-name{font-family:Oswald,sans-serif;font-weight:700;font-size:14px;letter-spacing:1.3px;color:#fff;line-height:1.2}
+.legal-hdr .brand-name em{color:var(--gold);font-style:normal}
+.legal-back{
+  color:var(--w70);text-decoration:none;font-size:13px;white-space:nowrap;
+  border:1px solid rgba(255,255,255,.18);border-radius:var(--r-pill);padding:7px 14px;
+}
+.legal-back:hover{color:#fff;border-color:rgba(255,255,255,.4)}
+
+.legal-main{max-width:820px;margin:0 auto;padding:36px 20px 8px}
+.legal-main h1{
+  font-family:Oswald,sans-serif;font-size:clamp(23px,4.6vw,30px);line-height:1.2;
+  color:var(--navy);margin-bottom:6px;
+}
+.legal-main h2{
+  font-family:Oswald,sans-serif;font-weight:500;font-size:clamp(17px,3.2vw,19px);
+  color:var(--navy);margin:26px 0 8px;padding-top:18px;
+  border-top:1px solid var(--line);
+}
+.legal-main h2:first-of-type{border-top:0;padding-top:0}
+.legal-main p{color:#3a3d48;font-size:15px;line-height:1.75;margin-bottom:10px}
+.legal-main a{color:var(--navy2);text-decoration:underline;text-underline-offset:2px}
+.legal-main strong,.legal-main b{color:var(--ink)}
+.legal-updated{
+  display:inline-block;background:var(--soft);border:1px solid var(--line);
+  border-radius:var(--r-pill);padding:4px 12px;margin-bottom:20px;
+  font-size:12.5px;color:var(--gray);
+}
+.legal-foot{
+  max-width:820px;margin:28px auto 0;padding:18px 20px 34px;
+  border-top:1px solid var(--line);
+}
+.legal-foot p{font-size:13px;color:var(--gray);margin-bottom:6px}
+.legal-foot a{color:var(--navy2)}
+
+/* 404 — centred, but on the same navy/gold and same green as the site CTA */
+.err-wrap{
+  min-height:calc(100vh - 62px);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:40px 20px;
+  background:linear-gradient(150deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;
+}
+.err-code{
+  font-family:Oswald,sans-serif;font-weight:700;line-height:1;
+  font-size:clamp(64px,18vw,120px);color:var(--gold);
+}
+.err-wrap h1{font-family:Oswald,sans-serif;font-size:clamp(21px,5.5vw,32px);margin:8px 0 12px}
+.err-wrap p{color:var(--w70);max-width:520px;margin:0 auto 24px;font-size:15px}
+
 /* ---------- sticky WhatsApp ---------- */
 .sticky-wa{
   position:fixed;bottom:16px;right:16px;z-index:99;background:var(--wa);color:#fff;
